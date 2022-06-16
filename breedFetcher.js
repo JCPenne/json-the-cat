@@ -2,12 +2,17 @@ const request = require('request');
 // console.log(args[0]);
 
 const fetchBreedDescription = (breedName, callback) => {
-  request(breedname, (error, response, body) => {
-    if (error) {
-      console.log(error);
-    }
+  searchByBreed = 'https://api.thecatapi.com/v1/breeds/search?q=' + breedName;
+  request(searchByBreed, (error, response, body) => {
     const data = JSON.parse(body);
-    console.log(data[0].description);
+
+    if (data.length === 0) {
+      return callback(error, null);
+    }
+    if (error) {
+      return callback(error, null);
+    }
+    return callback(null, data[0].description);
   });
 };
 
